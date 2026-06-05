@@ -160,13 +160,6 @@ phone_number_hash: pbkdf2_sha256$150000$...
 - Demonstrated practical understanding that encryption and hashing solve different problems.
 - Shows transition from on-prem network/infrastructure support into AWS cloud engineering and DevSecOps.
 
-## Suggested GitHub Repository Name
-
-`aws-secure-3tier-hashed-data-platform`
-
-## Suggested GitHub Description
-
-`AWS 3-tier secure data capture platform using Terraform, GitHub Actions, RDS encryption, private subnets, and application-level hashing to protect sensitive user data.`
 
 ## Cost Warning
 
