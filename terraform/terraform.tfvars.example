@@ -1,0 +1,5 @@
+aws_region  = "eu-west-2"
+project_name = "secure-3tier-hash"
+db_username = "adminuser"
+db_password = "ChangeMeStrongPassword123!"
+app_pepper  = "replace-with-random-secret-generated-outside-git"

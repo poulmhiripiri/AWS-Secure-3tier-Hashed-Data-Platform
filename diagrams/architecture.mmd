@@ -1,0 +1,9 @@
+flowchart TD
+    User[User Browser] -->|HTTPS| ALB[Public Application Load Balancer]
+    ALB --> Web[Presentation Tier]
+    Web -->|Private traffic| AppALB[Internal Application Load Balancer]
+    AppALB --> App[Application Tier: Hashing API]
+    App -->|Retrieve pepper| Secrets[AWS Secrets Manager / SSM]
+    App -->|Store hashes only| RDS[(RDS MySQL Private DB)]
+    App --> Logs[CloudWatch Logs]
+    CloudTrail[CloudTrail] --> S3[(Encrypted Audit Log Bucket)]
