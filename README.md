@@ -21,6 +21,20 @@ Sensitive data considered in this design includes:
 
 Important design note: passwords should be stored as strong one-way hashes. Other sensitive data should only be hashed when the business needs verification or matching, not retrieval. If the original value must be displayed back to the user or processed later, encryption or tokenisation is more appropriate.
 
+### Recent Breach Context
+
+Recent breach reporting reinforces the motivation for this design. Privacy Rights Clearinghouse reported that its 2025 Data Breach Chronology captured **8,019 breach notification filings**, representing **4,080 unique breach events** and impacting at least **375 million individuals**. It also highlighted that vendor and supply-chain incidents accounted for many of the largest reported breaches, showing why organisations should assume that stored customer records may eventually be exposed through direct or third-party compromise.
+
+Publicly reported incidents also showed how ordinary customer contact data can become valuable to attackers. For example, Qantas confirmed in 2025 that a cyber-attack on a third-party customer servicing platform potentially exposed personal data for up to **6 million customers**, including names, email addresses, phone numbers, birth dates, and frequent flyer numbers. Healthcare-sector reporting also showed very large-scale exposure of protected health information, with HIPAA Journal reporting that 2025 saw **772 large healthcare data breaches** listed on the HHS OCR breach portal, involving the exposure or theft of protected health information for more than **139 million individuals**.
+
+These examples support the core design principle of this project: even where an attacker gains access to application or database records, sensitive user attributes should not be stored in clear text where they can be harvested and reused for credential attacks, fake identities, social engineering, account takeover, or identity abuse.
+
+Sources for this context are included for recruiter review:
+
+- Privacy Rights Clearinghouse, 2025 Data Breach Report: https://privacyrights.org/resources-tools/reports/2025-data-breach-report
+- The Guardian, Qantas cyber-attack report: https://www.theguardian.com/business/2025/jul/02/qantas-confirms-cyber-attack-exposes-records-of-up-to-6-million-customers
+- HIPAA Journal, Largest Healthcare Data Breaches of 2025: https://www.hipaajournal.com/largest-healthcare-data-breaches-of-2025/
+
 ## Executive Summary
 
 The solution deploys a secure 3-tier architecture on AWS:
@@ -194,6 +208,13 @@ retina_template_hash: pbkdf2_sha256$150000$...
 - Demonstrated practical understanding that encryption and hashing solve different problems.
 - Shows transition from on-prem network/infrastructure support into AWS cloud engineering and DevSecOps.
 
+## Suggested GitHub Repository Name
+
+`aws-secure-3tier-hashed-data-platform`
+
+## Suggested GitHub Description
+
+`AWS 3-tier secure data capture platform using Terraform, GitHub Actions, RDS encryption, private subnets, and application-level hashing to protect sensitive user data.`
 
 ## Cost Warning
 
