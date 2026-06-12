@@ -4,6 +4,23 @@ A recruiter-ready AWS cloud engineering project showing how to design and deploy
 
 This project is written for a candidate moving from hands-on infrastructure, networks, and banking environments into cloud architecture and DevSecOps. It demonstrates AWS networking, segmentation, infrastructure as code, CI/CD, database hardening, secrets handling, and application-level data protection.
 
+
+## Breach-Driven Motivation
+
+This project was inspired by recent high-profile data breaches affecting large organisations. Those incidents showed that once user records are harvested, attackers may reuse the data across multiple systems for credential attacks, identity fraud, social engineering, account takeover, fake identity creation, and abuse of customer trust.
+
+The design therefore assumes that the database could be compromised and focuses on reducing the value of stolen records. The application hashes sensitive fields before database storage, keeps the application pepper outside the database, encrypts the RDS layer with KMS, and isolates the database in private subnets.
+
+Sensitive data considered in this design includes:
+
+- passwords and authentication secrets
+- contact details such as phone numbers and email-linked identifiers
+- National Insurance numbers or other government identity numbers
+- account details or customer reference numbers
+- biometric-derived verification templates such as fingerprint or retina templates
+
+Important design note: passwords should be stored as strong one-way hashes. Other sensitive data should only be hashed when the business needs verification or matching, not retrieval. If the original value must be displayed back to the user or processed later, encryption or tokenisation is more appropriate.
+
 ## Executive Summary
 
 The solution deploys a secure 3-tier architecture on AWS:
@@ -12,7 +29,7 @@ The solution deploys a secure 3-tier architecture on AWS:
 2. **Application tier**: Private application service where sensitive data is validated and hashed before persistence.
 3. **Data tier**: Amazon RDS MySQL in isolated private database subnets with encryption at rest.
 
-Sensitive fields such as passwords, national ID numbers, or phone numbers are never stored in clear text. The application derives salted hashes using PBKDF2-HMAC-SHA256 before writing to the database. A separate application pepper is retrieved from AWS Secrets Manager / SSM Parameter Store so that a database-only compromise does not expose the original values.
+Sensitive fields such as passwords, contact details, National Insurance numbers, account details, and biometric-derived verification templates are never stored in clear text when they are only required for verification or matching. The application derives salted hashes using PBKDF2-HMAC-SHA256 before writing to the database. A separate application pepper is retrieved from AWS Secrets Manager / SSM Parameter Store so that a database-only compromise does not expose the original values.
 
 > Note: Hashing is one-way. It is suitable for passwords and verification-only sensitive fields. If a field must later be displayed back to the user, use encryption or tokenisation instead of hashing.
 
@@ -123,6 +140,17 @@ git remote add origin https://github.com/<your-username>/aws-secure-3tier-hashed
 git push -u origin main
 ```
 
+
+## Sensitive Data Handling Model
+
+| Data Type | Recommended Protection | Reasoning |
+|---|---|---|
+| Passwords | One-way salted hash with pepper | Passwords should never be recoverable |
+| National Insurance / government ID | Hash for verification-only use, otherwise encrypt or tokenise | Protects against fake identity creation and identity abuse |
+| Contact details | Hash for matching, encrypt/tokenise if communication is required | Email/phone may be needed operationally |
+| Account details / customer references | Tokenise or encrypt unless only used for matching | These can be reused for fraud and account takeover |
+| Biometric templates | Store only protected templates; encrypt/tokenise and avoid raw biometric storage | Biometric data cannot be changed like a password |
+
 ## Application Behaviour
 
 The sample API accepts user details and hashes sensitive values before database storage.
@@ -135,8 +163,11 @@ Example input:
   "last_name": "Doe",
   "email": "jane@example.com",
   "password": "SuperSecretPassword!",
-  "national_id": "AB123456C",
-  "phone_number": "+441234567890"
+  "national_insurance_number": "QQ123456C",
+  "phone_number": "+441234567890",
+  "account_reference": "ACC-100200300",
+  "fingerprint_template": "template-derived-value",
+  "retina_template": "template-derived-value"
 }
 ```
 
@@ -147,8 +178,11 @@ first_name: Jane
 last_name: Doe
 email: jane@example.com
 password_hash: pbkdf2_sha256$150000$...
-national_id_hash: pbkdf2_sha256$150000$...
+national_insurance_number_hash: pbkdf2_sha256$150000$...
 phone_number_hash: pbkdf2_sha256$150000$...
+account_reference_hash: pbkdf2_sha256$150000$...
+fingerprint_template_hash: pbkdf2_sha256$150000$...
+retina_template_hash: pbkdf2_sha256$150000$...
 ```
 
 ## Recruiter Talking Points

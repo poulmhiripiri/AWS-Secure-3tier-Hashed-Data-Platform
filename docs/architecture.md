@@ -41,3 +41,8 @@ This project demonstrates how to build a secure AWS 3-tier system that captures 
 ## Why This Matters
 
 If an attacker compromises the database, they see only hash strings. They do not receive the original values, the application pepper, or the ability to reverse the hashes. This reduces the business impact of a database compromise.
+
+
+## Breach-aware data protection objective
+
+This design was created in response to the growing impact of large-company data breaches. The architecture assumes that attackers may attempt to harvest passwords, contact details, National Insurance numbers, account identifiers, and biometric-derived verification data. The system therefore minimises database exposure by storing verification-only sensitive values as hashes, isolating secrets outside the database, and combining application-level protection with AWS network segmentation and encryption controls.

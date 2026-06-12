@@ -1,0 +1,9 @@
+flowchart LR
+    DEV[Developer] --> PR[Pull Request]
+    PR --> FMT[terraform fmt]
+    FMT --> VAL[terraform validate]
+    VAL --> PLAN[terraform plan]
+    PLAN --> REVIEW[Review Plan]
+    REVIEW --> MERGE[Merge to main]
+    MERGE --> APPLY[terraform apply]
+    APPLY --> AWS[AWS Multi-AZ Infrastructure]

@@ -1,0 +1,26 @@
+flowchart TD
+    U[Users / Clients] --> R53[Route 53]
+    R53 --> WAF[AWS WAF]
+    WAF --> ALB[Internet-facing ALB]
+    subgraph AWS[AWS Cloud]
+      subgraph VPC[VPC across two Availability Zones]
+        subgraph AZA[Availability Zone A]
+          PUBA[Public Subnet A]
+          APPA[Private App Subnet A]
+          DBA[Private DB Subnet A]
+        end
+        subgraph AZB[Availability Zone B]
+          PUBB[Public Subnet B]
+          APPB[Private App Subnet B]
+          DBB[Private DB Subnet B]
+        end
+        ALB --> WEB[Web Tier Auto Scaling Group]
+        WEB --> IALB[Internal ALB]
+        IALB --> APP[Application Tier Auto Scaling Group]
+        APP --> RDS[(RDS MySQL Multi-AZ)]
+      end
+      APP --> SSM[SSM Parameter Store / Secrets Manager]
+      APP --> KMS[AWS KMS]
+      APP --> CW[CloudWatch]
+      AWS --> CT[CloudTrail]
+    end

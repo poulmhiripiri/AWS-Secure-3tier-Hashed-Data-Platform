@@ -1,5 +1,27 @@
 # Security Design
 
+
+## Threat Scenario: Database Compromise After a Major Breach
+
+The project is designed around a realistic breach scenario: attackers gain access to the application database or export user tables after exploiting stolen credentials, misconfiguration, vulnerable third-party tooling, or insufficient segmentation. The objective is to ensure that the database does not contain reusable clear-text identity data.
+
+The main risks being addressed are:
+
+- credential reuse and password spraying across other platforms
+- identity fraud using National Insurance numbers, account details, and contact data
+- fake identity creation using harvested identity attributes
+- account takeover where personal details are used to pass weak verification checks
+- irreversible harm from exposed biometric data, because fingerprints and retina patterns cannot simply be reset like passwords
+
+Security response in this architecture:
+
+1. Sensitive values are processed in the private application tier.
+2. Verification-only values are transformed into strong salted hashes before persistence.
+3. The application pepper is stored outside the database in AWS Secrets Manager / SSM Parameter Store.
+4. RDS is private, encrypted with KMS, and only reachable from the application security group.
+5. CloudTrail, CloudWatch, and VPC Flow Logs support investigation and audit evidence.
+
+
 ## Hashing Strategy
 
 The application uses PBKDF2-HMAC-SHA256 with:

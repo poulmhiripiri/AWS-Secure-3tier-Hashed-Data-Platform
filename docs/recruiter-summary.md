@@ -4,12 +4,17 @@
 
 AWS Secure 3-Tier Hashed Data Capture Platform
 
+## Project Motivation
+
+This project was driven by repeated high-profile data breaches affecting large organisations, where harvested user data can be reused for identity fraud, fake identity creation, account takeover, and credential attacks across multiple systems. I designed this AWS architecture to reduce the value of compromised database records by ensuring sensitive user data is not stored in clear text.
+
 ## One-Line Summary
 
 Designed and automated a secure AWS 3-tier application that captures user data and stores sensitive fields as salted hash values in RDS, using Terraform and GitHub Actions.
 
 ## CV / LinkedIn Bullet Points
 
+- Designed a breach-aware secure AWS Multi-AZ 3-tier architecture inspired by recent large-scale data breaches and identity abuse risks.
 - Designed a secure AWS 3-tier architecture using public, private application, and private database subnets across multiple Availability Zones.
 - Implemented data confidentiality controls by hashing sensitive user fields before storage, reducing impact in a database compromise scenario.
 - Automated cloud infrastructure deployment using Terraform and GitHub Actions CI/CD workflows.
@@ -18,7 +23,7 @@ Designed and automated a secure AWS 3-tier application that captures user data a
 
 ## Skills Demonstrated
 
-AWS VPC, Subnets, Routing, Security Groups, ALB, RDS MySQL, KMS, IAM, SSM / Secrets Manager, CloudWatch, CloudTrail, Terraform, GitHub Actions, Python, Flask, secure hashing, DevSecOps, infrastructure as code.
+AWS VPC, Subnets, Routing, Security Groups, ALB, RDS MySQL, KMS, IAM, SSM / Secrets Manager, CloudWatch, CloudTrail, Terraform, GitHub Actions, Python, Flask, secure hashing, data classification, identity risk reduction, DevSecOps, infrastructure as code.
 
 ## Interview Explanation
 

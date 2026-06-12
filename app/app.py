@@ -61,8 +61,11 @@ def create_user():
         "last_name": payload["last_name"],
         "email": payload["email"],
         "password_hash": hash_sensitive_value(payload.get("password")),
-        "national_id_hash": hash_sensitive_value(payload.get("national_id")),
+        "national_insurance_number_hash": hash_sensitive_value(payload.get("national_insurance_number")),
         "phone_number_hash": hash_sensitive_value(payload.get("phone_number")),
+        "account_reference_hash": hash_sensitive_value(payload.get("account_reference")),
+        "fingerprint_template_hash": hash_sensitive_value(payload.get("fingerprint_template")),
+        "retina_template_hash": hash_sensitive_value(payload.get("retina_template")),
     }
     USERS.append(user)
 

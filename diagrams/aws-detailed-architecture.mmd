@@ -1,0 +1,35 @@
+flowchart LR
+    User[End User] --> R53[Route 53]
+    R53 --> CF[CloudFront Optional]
+    CF --> WAF[AWS WAF]
+    WAF --> ALB[Public Application Load Balancer]
+    subgraph VPC[Amazon VPC]
+      subgraph AZA[Availability Zone A]
+        NAT1[NAT Gateway A]
+        WEB1[Web Tier A]
+        APP1[App Tier A]
+        RDS1[(RDS Primary)]
+      end
+      subgraph AZB[Availability Zone B]
+        NAT2[NAT Gateway B]
+        WEB2[Web Tier B]
+        APP2[App Tier B]
+        RDS2[(RDS Standby)]
+      end
+      ALB --> WEB1
+      ALB --> WEB2
+      WEB1 --> IALB[Internal ALB]
+      WEB2 --> IALB
+      IALB --> APP1
+      IALB --> APP2
+      APP1 --> RDS1
+      APP2 --> RDS1
+      RDS1 -. Multi-AZ replication .-> RDS2
+    end
+    APP1 --> SM[Secrets Manager / SSM]
+    APP2 --> SM
+    APP1 --> KMS[KMS]
+    APP2 --> KMS
+    VPC --> CW[CloudWatch / Flow Logs]
+    GitHub[GitHub Actions] --> Terraform[Terraform]
+    Terraform --> VPC
